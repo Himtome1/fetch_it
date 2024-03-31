@@ -16,7 +16,7 @@ async function validateUser (email:string, password:string) {
         const valid:boolean = await bcrypt.compare(password,hashedPassword);
 
         if(valid){
-            
+            console.log("User Validated")
         return true;
         }
         return (false);
@@ -28,20 +28,21 @@ async function validateUser (email:string, password:string) {
 }
 
 async function POST (req:Request){
-        
+    console.log("receiving POST")
         try{
-
+            
             const data:any = await req.json();
+            
 
             if(data.email && data.password){
-
+                console.log(data.email, data.password)
                 const email:string = data.email;
                 const password:string = data.password;
                 const validated:boolean = await validateUser(email, password);
                 if(validated) {
-                    return(NextResponse.json({message : `Login Success! Welcome, ${email}`}, {status: 200}));
+                    return(NextResponse.json({ok: true, user: data}, {status: 200}));
                 }
-                return(NextResponse.json({message : "Invalid Credentials"}, {status: 401}));
+                return(NextResponse.json({ok: false}, {status: 401}));
             }
 
             return (NextResponse.json({message : "Incomplete Credentials"},{status:424}));
