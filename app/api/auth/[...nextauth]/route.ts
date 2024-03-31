@@ -41,7 +41,7 @@ const handler = NextAuth(  {
     },
     pages: {
       signIn: "/signIn",
-      
+      signOut: "/"
     }
     
 })

@@ -1,31 +1,39 @@
 "use client"
 import { signIn, useSession, signOut } from "next-auth/react"
-import { redirect } from "next/dist/server/api-utils"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
 export default function App() {
-    const data = useSession().data
-    console.log(data)
+
+    const [url, setUrl] = useState({user:'/user/signIn', driver: '/driver/signIn'})
+    const {status} = useSession()
+    
+    useEffect(
+        ()=>{
+            if(status=="authenticated"){
+                setUrl({user:"/user/dashboard", driver:"/driver/dashboard"})
+            }
+        },[status]
+    )
+
+        
     
     return(
         <div className="w-screen flex flex-col items-center justify-center h-screen bg-blue-900">
-            {data? 
+           
             <p className="text-7xl font-bold text-white">
-                Welcome Home {data.user.email}
-                <button onClick = {()=>signOut()} className="bg-green-900 w-1/10 h-1/10 rounded-lg">Sign Out</button>
+                Fetch.it
             </p>
-            :(
+
             <div>
-            <p className="text-7xl font-bold text-white">
-               You must be signed in to view this page
-            </p>
+            
             <p className="text-3xl font-bold text-white">
-                Please sign in here: 
+               Are you a <Link className="hover:text-yellow-400" href={url.driver}>Driver</Link> or do you need a <Link className="hover:text-yellow-400" href={url.user}>Delivery</Link>?
             </p>
-            <Link href={"/signIn"}>Sign In</Link>
+
             </div>
             
-            )}   
+
         </div>
     )
 }
