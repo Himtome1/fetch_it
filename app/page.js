@@ -7,12 +7,17 @@ export default function App() {
 
     const [url, setUrl] = useState({user:'/user/signIn', driver: '/driver/signIn'})
     const {status} = useSession()
-    
+    const data = useSession().data
+   
     useEffect(
         ()=>{
             if(status=="authenticated"){
+                if(data.user.driver)
                 setUrl({user:"/user/dashboard", driver:"/driver/dashboard"})
+                if(!data.user.driver)
+                setUrl({user:"/user/dashboard", driver:"/driver/signIn"})
             }
+            
         },[status]
     )
 

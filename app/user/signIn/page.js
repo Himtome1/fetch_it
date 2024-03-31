@@ -4,6 +4,7 @@ import {useState, useEffect} from "react"
 import { signIn } from "next-auth/react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 
 function SignIn(){
@@ -27,7 +28,7 @@ function SignIn(){
 
     return(
         <div className="w-screen h-screen bg-blue-900 items-center justify-center flex flex-col">
-            <h1 className="text-5xl text-white font-bold">Fetch.it</h1>
+            <Link href="/"><h1 className="text-5xl text-white font-bold">Fetch.it</h1></Link>
             <div className="w-min h-min p-20 flex flex-col items-center bg-gray-400 mt-20 justify-center bg-white rounded-lg">
                 <input className="mb-5" type="email" onChange={(event)=>handleEmail(event)}>
                 </input>

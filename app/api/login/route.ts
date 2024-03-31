@@ -12,12 +12,13 @@ async function validateUser (email:string, password:string) {
                 email: email
             }
         })
+        
         const hashedPassword:string = user.password
         const valid:boolean = await bcrypt.compare(password,hashedPassword);
 
         if(valid){
             console.log("User Validated")
-        return true;
+        return [true,user];
         }
         return (false);
     }
@@ -35,12 +36,13 @@ async function POST (req:Request){
             
 
             if(data.email && data.password){
-                console.log(data.email, data.password)
                 const email:string = data.email;
                 const password:string = data.password;
-                const validated:boolean = await validateUser(email, password);
+                const array = await validateUser(email, password);
+                const validated = array[0]
+                const user = array [1]
                 if(validated) {
-                    return(NextResponse.json({ok: true, user: data}, {status: 200}));
+                    return(NextResponse.json({ok: true, user: user}, {status: 200}));
                 }
                 return(NextResponse.json({ok: false}, {status: 401}));
             }
