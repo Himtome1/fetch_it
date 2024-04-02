@@ -1,57 +1,67 @@
 "use client"
 import { signIn, useSession, signOut } from "next-auth/react"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 
+
+
+
+
 export default function App() {
-    const data = useSession().data
-    
+
+const [jobs, setJobs] = useState(null)
+const [loaded, setLoaded] = useState(false)
+
+ useEffect(
+
+    () => {
+        fetch("http://localhost:3000/api/jobs/queryJobs", {method: "GET"})
+        .then((res)=>
+            res.json()
+        )
+        .then((res)=> { console.log(res), setJobs(res)})
+        .then(()=>setLoaded(true))
+    }, []
+ )
+ 
+
+    const {data, status} = useSession()
+    const router = useRouter()
+
+    useEffect(()=>{
+        if (status == "unauthenticated") router.push('/')
+    },[data])
+
+    useEffect(()=>{
+       if(data && data.user.driver == false){
+        router.push("/")
+       }
+        
+    },[])
+
+
     return(
-        <div className="w-screen flex flex-col items-center justify-center h-screen bg-blue-900">
-            {data? 
-                data.user.driver ?
-            <div>
-            <p className="text-7xl font-bold text-white">
-                Welcome Home {data.user.name}
-            <button onClick = {()=>signOut({callbackUrl:"/"})} className="bg-green-900 items-center flex justify-center w-1/10 h-1/10 rounded-lg">Sign Out</button>
-            </p>
+        <div className="bg-blue-900 flex flex-col items-center justify-center w-screen h-screen ">
+            <div className="flex flex-col w-2/3 h-1/2 bg-white items-center justify-center">
+            {jobs?jobs.map(
+                (job)=>{
+                    console.log(jobs)
+                    return(
+                        <div key = {job.job_id} className="flex justify-evenly w-full m-2 bg-gray-200 border-gray-800 border-2">
+                            <p>Pay: {job.price}</p>
+                            <p>Distance: {job.distance}</p>
+                            <p>Road Time: {job.time}</p>
+                            <p>Date: {job.date}</p>
+                            <p>Description: {job.description}</p>
+                        </div>
+                    )
+                }
+            ): null}
             </div>
-            : 
-            <div className="items-center flex flex-col text-center justify-center">
-                <p className="text-7xl font-bold text-white">
-                You must be a driver to view the driver dashboard
-                </p>
-                <p className="text-2xl font-bold text-white">
-                Click here to return to user dashboard: 
-                </p>
-                <Link  href={"/user/dashboard"}>
-                    <div style={{width:"100px", height:"33px"}} className=" items-center justify-center rounded-lg bg-white flex ">
-                        Return
-                    </div>
-                </Link>
-                <p className="text-2xl font-bold text-white">
-                Interested in driving?
-                </p>
-                <Link  href={"/driver/signUp"}>
-                    <div style={{width:"100px", height:"33px"}} className=" items-center justify-center rounded-lg bg-white flex ">
-                        Apply
-                    </div>
-                    </Link>
 
-            </div>
-            
 
-            :(
-            <div>
-            <p className="text-7xl font-bold text-white">
-               You must be signed in to view this page
-            </p>
-            <p className="text-3xl font-bold text-white">
-                Please sign in here: 
-            </p>
-            <Link href={"/driver/signIn"}>Sign In</Link>
-            </div>
-            
-            )}
         </div>
+
     )
 }

@@ -5,6 +5,7 @@ import { signIn } from "next-auth/react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Button from "../../components/Button"
 
 
 function SignIn(){
@@ -26,17 +27,24 @@ function SignIn(){
         setPassword(e.target.value)
     }
 
+    async function handleSignIn () {
+        signIn('credentials',{ redirect: false, email,password})
+    }
     return(
         <div className="w-screen h-screen bg-blue-900 items-center justify-center flex flex-col">
             <Link href="/"><h1 className="text-5xl text-white font-bold">Fetch.it</h1></Link>
             <h1 className="text-5xl text-yellow-400 font-bold mt-10 italic">DRIVER</h1>
-            <div className="w-min h-min p-20 flex flex-col items-center bg-gray-400 mt-20 justify-center bg-white rounded-lg">
-                <input className="mb-5" type="email" onChange={(event)=>handleEmail(event)}>
-                </input>
-                <input type="password" onChange={(event) => handlePassword(event)}></input>
-                <button onClick = {async()=> await signIn('credentials',{ redirect: false, email,password}) .then((res)=>{console.log(res)})}>
-                    Login
-                </button>
+            <div className="w-80 h-80 p-5 flex flex-col bg-gray-400 mt-20 bg-white items-center justify-evenly rounded-lg">
+                <div className="flex flex-col w-min h-min">
+                    <input className="mb-5" type="email" onChange={(event)=>handleEmail(event)}>
+                    </input>
+                    <input type="password" onChange={(event) => handlePassword(event)}></input>
+                </div>
+                <Button type="regular" color="yellow" text="Sign in" callback={handleSignIn}/>
+                <div className="flex-col flex items-center justify-center">
+                <p>Dont have a driver account?</p>
+                <Button type = "small" color="blue" text="Sign up"  callback={()=>router.push("./signUp")}/>
+                </div>
             </div>
         </div>
     )

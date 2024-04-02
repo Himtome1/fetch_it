@@ -17,3 +17,17 @@ model user{
   subscription_status String?
 }
 
+model jobs{
+  job_id Int @id @default(autoincrement())
+  user_id Int?
+  description String?
+  load_weight Int?
+  pickup_location String?
+  dropoff_location String?
+  date String?
+  status String?
+  price Float?
+  distance Float?
+  time Float?
+}
+

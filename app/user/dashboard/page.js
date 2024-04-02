@@ -1,32 +1,24 @@
 "use client"
 import { signIn, useSession, signOut } from "next-auth/react"
 import Link from "next/link"
+import Button from "../../components/Button"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 export default function App() {
     const data = useSession().data
-
-    
+    const router = useRouter()
+    useEffect(
+        ()=>{
+            if(!data){
+                router.push("/")
+            }
+        },
+        [data]
+    )
     return(
-        <div className="w-screen flex flex-col items-center justify-center h-screen bg-blue-900">
-            {data? 
+        <div className="w-screen grid-rows-5 grid-cols-4 h-screen bg-blue-900">
             
-            <p className="text-7xl font-bold text-white">
-                Welcome Home {data.user.name}
-            <button onClick = {()=>signOut({callbackUrl:"/"})} className="bg-green-900 items-center flex justify-center w-1/10 h-1/10 rounded-lg">Sign Out</button>
-            </p>
-            
-            :(
-            <div>
-            <p className="text-7xl font-bold text-white">
-               You must be signed in to view this page
-            </p>
-            <p className="text-3xl font-bold text-white">
-                Please sign in here: 
-            </p>
-            <Link href={"/user/signIn"}>Sign In</Link>
-            </div>
-            
-            )}   
         </div>
     )
 }
