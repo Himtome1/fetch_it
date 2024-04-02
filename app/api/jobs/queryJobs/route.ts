@@ -18,6 +18,10 @@ async function getJobs()
                     description : true,
                     distance: true,
                     time: true,
+                    user_id: true,
+                    driver_id: true,
+                    pickup_location: true,
+                    dropoff_location: true,
                 }
             }
     )
@@ -48,6 +52,7 @@ async function postJob(job){
             pickup_location: job.pickup_location,
             distance: parseFloat(job.distance),
             time: parseFloat(job.time),
+            driver_id: null
         }
     })}
     catch(e){

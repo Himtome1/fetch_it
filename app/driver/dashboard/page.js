@@ -50,7 +50,7 @@ export default function App() {
                 < h1 className="text-3xl text-gray-600 font-bold">Assigned Jobs</h1>
                 {jobs?jobs.map(
                     (job)=>{
-                        if(job.user_id == user_id){
+                        if(job.driver_id == user_id){
                             return(
                                 <div className="w-1/2 h-min p-2 m-2 bg-white flex-col items-center rounded-xl ">
                                     <button onClick={()=>setSelectedJob(job.job_id)} className="w-full h-min bg-green-200 rounded-md">
@@ -92,6 +92,7 @@ export default function App() {
                                     <p>Road time: {job.time} hrs</p>
                                     <p>Distance: {job.distance} km</p>
                                     <Button type="regular" color="blue" text="Back" callback={()=>setSelectedJob(null)}/>
+                                    <Button type="regular" color="blue" text="Assign" callback={()=>setSelectedJob(null)}/>
                                 </div>
                             )
                         }

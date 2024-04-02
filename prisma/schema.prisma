@@ -20,6 +20,8 @@ model user{
 model jobs{
   job_id Int @id @default(autoincrement())
   user_id Int?
+  driver_id Int?
+  title String?
   description String?
   load_weight Int?
   pickup_location String?
@@ -30,4 +32,6 @@ model jobs{
   distance Float?
   time Float?
 }
+
+
 
