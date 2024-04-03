@@ -48,7 +48,7 @@ interface location {
     address: string
     postalCode: string
 }
-async function generateJob(userEmail:string, title:string, description:string, jobObject:jobObjectGarbage|jobObjectLargeItems|jobObjectLooseMaterial, dropOffLocation:location, pickupLocation:location){
+async function generateJob(pickupTime:Date, userEmail:string, title:string, description:string, jobObject:jobObjectGarbage|jobObjectLargeItems|jobObjectLooseMaterial, dropOffLocation:location, pickupLocation:location){
     console.log(
         userEmail,
         title,
@@ -72,17 +72,39 @@ export default function App() {
     )
     
     const [dropOffLocation, setDropOffLocation] = useState<location>()
+    const [pickupLocation, setPickupLocation] = useState<location>()
+    const [jobObject, setJobObject] = useState<jobObjectGarbage|jobObjectLargeItems|jobObjectLooseMaterial>()
+    const [title, setTitle] = useState<string>()
+    const [loadType, setLoadType] = useState<"largeItems"|"looseMaterial"|"garbage">()
+    const [description, setDescription] = useState<string>()
+    const [pickupTime, setPickupTime] = useState<Date>()
+    const [progress, setProgress] = useState<number>(0)
+    const [labour, setLabour] = useState<number>()
+    
+    
 
-    const listArray = ["Large Items (Non Garbage)" , "Garbage/Recycling","Loose Material" ]
+    const listArray = ["largeItems" , "garbage","looseMaterial" ]
     return(
         <div className="w-screen flex-col h-screen bg-gray-200">
-            <div className="flex-col flex items-center justify-center ">
-                Title <Input type="text"/>
-                Description <Input type="text"/>
-                Type of Load <Dropdown listArray={listArray} textColor="black" bg="white" itemColor="gray-200" setItem={()=>null}/>
-                Pickup Location <Input type="text"/>
-                Drop off Location<Input type="text"/>
-                Time of pickup <input type="datetime-local"/>
+            
+            {progress===0?
+            <div key={0} className="flex-col flex items-center h-2/3 justify-top py-10 ">
+                Title <Input type="text" placeholder={title?title:null} setValue={setTitle}/>
+                Description <Input type="text" placeholder={description?description:null} setValue={setDescription}/>
+                Type of Load <Dropdown listArray={listArray} textColor="black" bg="white" itemColor="gray-200" item={loadType} setItem={setLoadType}/>
+            </div>:
+            progress===1&&loadType==="largeItems"?
+            <div key={1} className="flex-col flex items-center h-2/3 justify-top py-10 ">
+                Please estimate the labour required for the job in hours as a decimal number eg. 1.5<Input type="text" setValue={setLabour} placeholder={labour?labour.toString():null}/>
+
+            </div>:
+            null
+            
+            
+            }
+            <div className="px-5 w-screen flex flex-row-reverse justify-between">
+            <Button text="Next" color="white" type="regular" callback={()=>setProgress(progress+1)}/>
+            {progress > 0 ? <Button text="Back" color="white" type="regular" callback={()=>setProgress(progress-1)}/> : null}
             </div>
         </div>
     )
