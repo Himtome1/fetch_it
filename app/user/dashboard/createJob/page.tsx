@@ -6,12 +6,13 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import Input from "../../../components/Input"
 import Dropdown from "../../../components/Dropdown"
+import Increment from "../../../components/Increment"
 
 
 interface jobObjectLargeItems{
     loadType: "largeItems"
     details:{
-        manifest: object
+        manifest: object[]
         twoMan:boolean
         quantity:number
         estimatedLabor:number //hours
@@ -79,8 +80,16 @@ export default function App() {
     const [description, setDescription] = useState<string>()
     const [pickupTime, setPickupTime] = useState<Date>()
     const [progress, setProgress] = useState<number>(0)
-    const [labour, setLabour] = useState<number>()
-    
+    const [labour, setLabour] = useState<jobObjectLargeItems["details"]["estimatedLabor"]>(0.2)
+    const [quantity, setQuantity] = useState<jobObjectLargeItems["details"]["quantity"]>(1.0)
+    const [manifest, setManifest] = useState<jobObjectLargeItems["details"]["manifest"]>([])
+    const [twoMan, setTwoMan] = useState<jobObjectLargeItems["details"]["twoMan"]>(false)
+    const [details, setDetails] = useState<jobObjectLargeItems["details"]>({
+        manifest: manifest,
+        twoMan: twoMan,
+        quantity: quantity,
+        estimatedLabor: labour
+    })
     
 
     const listArray = ["largeItems" , "garbage","looseMaterial" ]
@@ -95,8 +104,10 @@ export default function App() {
             </div>:
             progress===1&&loadType==="largeItems"?
             <div key={1} className="flex-col flex items-center h-2/3 justify-top py-10 ">
-                Please estimate the labour required for the job in hours as a decimal number eg. 1.5<Input type="text" setValue={setLabour} placeholder={labour?labour.toString():null}/>
-
+                Quantity of large items estimate: <Increment value={quantity} increment={1} setValue={setQuantity}/>
+                Labour estimate in hours: <Increment value={labour} increment={0.1} setValue={setLabour}/>
+                Please provide a manifest of the items you need moved:
+            
             </div>:
             null
             
