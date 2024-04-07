@@ -20,7 +20,7 @@ export default function Dropdown({listArray,bg,itemColor,setItem,item, textColor
     const FG = `bg-${itemColor}`
     const TC = `text-${textColor}`
     return(
-        <div className={`${BG} flex-col flex items-center w-64 min-h-11 justify-center rounded-lg border-2 border-gray-300 p-2`}>
+        <div className={`${BG} flex-col flex items-center w-64 min-h-min justify-center rounded-lg border-2 border-gray-300 p-2`}>
             <button className={`${FG} flex items-center justify-center p-1 m-1 rounded-md w-full`} onClick = {()=>setVisible(!visible)}>{item?item:`Please Select`}</button>
             {visible ? listArray.map((item)=>{
                 return(
