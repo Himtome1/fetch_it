@@ -3,7 +3,8 @@ import { signIn, useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import Button from "../../components/Button"
 import { useRouter } from "next/navigation"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
+import { BoxIcon } from "lucide-react"
 
 const BG = "bg-gray-100"
 
@@ -79,7 +80,7 @@ export default function App() {
                         if(selectedJob == null){
                         return(
                             <button key={job.job_id} onClick={()=>setSelectedJob(job.job_id)} className="w-full h-min p-2 m-2 bg-green-200 rounded-md">
-                                {job.description}
+                                {job.load_type==="largeItems"?<BoxIcon/>:null}{job.title}
                             </button>
                         )}
                         else if(job.job_id == selectedJob){
@@ -93,7 +94,9 @@ export default function App() {
                                     <p>Distance: {job.distance} km</p>
                                     <Button type="regular" color="blue" text="Back" callback={()=>setSelectedJob(null)}/>
                                     <Button type="regular" color="blue" text="Assign" callback={()=>setSelectedJob(null)}/>
+
                                 </div>
+                                
                             )
                         }
                         else return null

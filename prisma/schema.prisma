@@ -19,11 +19,10 @@ model user{
 
 model jobs{
   job_id Int @id @default(autoincrement())
-  user_id Int?
+  user_email String?
   driver_id Int?
   title String?
   description String?
-  load_weight Int?
   pickup_location String?
   dropoff_location String?
   date String?
@@ -31,6 +30,8 @@ model jobs{
   price Float?
   distance Float?
   time Float?
+  job_object String?
+  load_type String?
 }
 
 

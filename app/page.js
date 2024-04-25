@@ -2,6 +2,7 @@
 import { signIn, useSession, signOut } from "next-auth/react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
+import Button from "./components/Button"
 
 export default function App() {
 
@@ -24,15 +25,15 @@ export default function App() {
         
     
     return(
-        <div className="w-screen flex flex-col items-center justify-center h-screen bg-blue-900">
+        <div className="w-screen flex flex-col items-center justify-center h-screen bg-blue-900"> {/*wrapper*/}
            
-            <p className="text-7xl font-bold text-white">
+            <p className="text-7xl font-bold text-white"> {/*Title*/}
                 Fetch.it
             </p>
 
             <div>
             
-            <p className="text-3xl font-bold text-white">
+            <p className="text-3xl font-bold text-white"> {/*User input*/}
                Are you a <Link className="hover:text-yellow-400" href={url.driver}>Driver</Link> or do you need a <Link className="hover:text-yellow-400" href={url.user}>Delivery</Link>?
             </p>
 
